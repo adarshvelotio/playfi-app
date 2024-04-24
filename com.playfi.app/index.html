@@ -1,0 +1,136 @@
+<!--
+Copyright (c) 2020-2024 LG Electronics Inc.
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example Web App</title>
+    <style type="text/css">
+      body {
+        width: 100%;
+        height: 100%;
+        color: #ffffff;
+      }
+      div {
+        height: 100%;
+        width: 100%;
+        display: table;
+      }
+      h1 {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+      }
+    </style>
+    <script type="text/javascript">
+      window.onload = function () {
+        var bridge = new WebOSServiceBridge();
+        /*
+         *  getTimeApi calls gettime of systemservice, a module in the platform.
+         */
+        var getTimeApi = "luna://com.webos.service.systemservice/clock/getTime";
+        var getTimeParams = "{}";
+
+        /*
+         *  helloApi calls the hello method of js_service template provided by CLI.
+         *  In this case, the service name is used as default name "com.domain.app.service" is.
+         *  If you change this service name, you need to change the service name of the following API.
+         *
+         *  If you change the name to helloParmas as you want, the contents will be reflected on the screen.
+         */
+        var helloApi = "luna://com.playfi.app.service.login/hello";
+        var helloParams = '{"name":"webOS"}';
+
+        function getTime_callback(msg) {
+          var arg = JSON.parse(msg);
+          if (arg.returnValue) {
+            document.getElementById("inbuilt-service-result").innerHTML = `${
+              document.getElementById("inbuilt-service-result").innerHTML
+            }: ${arg.utc}`;
+          } else {
+            console.error(
+              "[APP_NAME: example web app] GETTIME_FAILED errorText : " +
+                arg.errorText
+            );
+            document.getElementById("inbuilt-service-result").innerHTML = `${
+              document.getElementById("inbuilt-service-result").innerHTML
+            }: ERROR`;
+          }
+        }
+
+        function hello_callback(msg) {
+          var arg = JSON.parse(msg);
+          if (arg.returnValue) {
+            document.getElementById("js-service-result").innerHTML = `${
+              document.getElementById("js-service-result").innerHTML
+            }: ${arg.Response}`;
+          } else {
+            console.error(arg);
+            document.getElementById("js-service-result").innerHTML = `${
+              document.getElementById("js-service-result").innerHTML
+            }: ERROR`;
+          }
+        }
+
+        bridge.onservicecallback = getTime_callback;
+        bridge.call(getTimeApi, getTimeParams);
+
+        var bridge2 = new WebOSServiceBridge();
+        bridge2.onservicecallback = hello_callback;
+
+        function onService1Click() {
+          bridge2.call(helloApi, helloParams);
+        }
+
+        document.getElementById("js-service-btn").onclick = onService1Click;
+
+        // Native Service Calling Code
+
+        var echoApi = "luna://com.playfi.app.audio/echo";
+        var echoParams = '{"input":"Echo Test Sample 1"}';
+
+        function echo_callback(msg) {
+          var arg = JSON.parse(msg);
+          if (arg.returnValue) {
+            document.getElementById("native-service-result").innerHTML = `${
+              document.getElementById("native-service-result").innerHTML
+            }: ${arg.echoMessage}`;
+          } else {
+            console.error(arg);
+            document.getElementById("native-service-result").innerHTML = `${
+              document.getElementById("native-service-result").innerHTML
+            }: ERROR`;
+          }
+        }
+
+        var bridge3 = new WebOSServiceBridge();
+        bridge3.onservicecallback = echo_callback;
+
+        function onService2Click() {
+          bridge3.call(echoApi, echoParams);
+        }
+
+        document.getElementById("native-service-btn").onclick = onService2Click;
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <h1 id="txt_msg">Hello, PlayFi App!!</h1>
+      <p id="inbuilt-service-result">Inbuilt Time Service Result:</p>
+    </div>
+    <hr />
+    <div>
+      <p id="js-service-result">JS Service Call Result:</p>
+      <button id="js-service-btn">Call External JS Service</button>
+    </div>
+    <hr />
+    <div>
+      <p id="native-service-result">Native Service Call Result:</p>
+      <button id="native-service-btn">Call External Native(C) Service</button>
+    </div>
+  </body>
+</html>

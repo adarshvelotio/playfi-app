@@ -1,0 +1,9 @@
+{
+  "id": "com.playfi.app.service.login",
+  "description": "HelloWorld Service",
+  "services": [
+    {
+      "name": "com.playfi.app.service.login"
+    }
+  ]
+}

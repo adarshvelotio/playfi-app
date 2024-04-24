@@ -1,0 +1,12 @@
+{
+  "id": "com.playfi.app.audio",
+  "description": "Native audio service",
+  "engine": "native",
+  "executable": "echo_service",
+  "services": [
+    {
+      "name": "com.playfi.app.audio",
+      "description": "Native audio service"
+    }
+  ]
+}
