@@ -8,6 +8,12 @@
 
 ---
 
+### Block Diagram for PlayFi TV App with Services
+
+![Block Diagram for PlayFi TV App with Services](/playfi-arch.png)
+
+---
+
 ## Development Setup
 
 ### System Requirements
