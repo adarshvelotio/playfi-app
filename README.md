@@ -1,5 +1,13 @@
 # PlayFi TV App
 
+## Architecture
+
+### Overall Architecture of WebOS OSE
+
+![Overall Architecture of WebOS OSE](https://www.webosose.org/images/docs/guides/core-topics/architecture/webos-ose-architecture-20221202.png)
+
+---
+
 ## Development Setup
 
 ### System Requirements
