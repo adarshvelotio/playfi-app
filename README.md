@@ -4,6 +4,8 @@
 
 ### Overall Architecture of WebOS OSE
 
+Refer: https://www.webosose.org/docs/guides/core-topics/architecture/architecture-overview/
+
 ![Overall Architecture of WebOS OSE](https://www.webosose.org/images/docs/guides/core-topics/architecture/webos-ose-architecture-20221202.png)
 
 ---
