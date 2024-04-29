@@ -27,6 +27,7 @@ SPDX-License-Identifier: Apache-2.0
     </style>
     <script type="text/javascript">
       window.onload = function () {
+        var audioDataBase64 = null;
         var bridge = new WebOSServiceBridge();
         /*
          *  getTimeApi calls gettime of systemservice, a module in the platform.
@@ -114,6 +115,41 @@ SPDX-License-Identifier: Apache-2.0
         }
 
         document.getElementById("native-service-btn").onclick = onService2Click;
+
+        // Audio Service Calling Code
+
+        var mediaApi = "luna://com.playfi.app.service.login/getAudioData";
+        var mediaParams = "{}";
+
+        function media_callback(msg) {
+          var arg = JSON.parse(msg);
+          if (arg.returnValue) {
+            console.log(arg.Response);
+            document.getElementById("audio-service-result").innerHTML = `${
+              document.getElementById("audio-service-result").innerHTML
+            }: ${arg.Response.msg}`;
+
+            audioDataBase64 = arg.Response.data;
+
+            document.getElementById(
+              "sample-audio"
+            ).src = `data:audio/wav;base64, ${audioDataBase64}`;
+          } else {
+            console.error(arg);
+            document.getElementById("audio-service-result").innerHTML = `${
+              document.getElementById("audio-service-result").innerHTML
+            }: ERROR`;
+          }
+        }
+
+        var bridge4 = new WebOSServiceBridge();
+        bridge4.onservicecallback = media_callback;
+
+        function onMediaBtnClick() {
+          bridge4.call(mediaApi, mediaParams);
+        }
+
+        document.getElementById("audio-get-btn").onclick = onMediaBtnClick;
       };
     </script>
   </head>
@@ -131,6 +167,20 @@ SPDX-License-Identifier: Apache-2.0
     <div>
       <p id="native-service-result">Native Service Call Result:</p>
       <button id="native-service-btn">Call External Native(C) Service</button>
+    </div>
+
+    <hr />
+    <div>
+      <div>
+        <p id="audio-service-result">Audio Service Call Result:</p>
+        <audio
+          id="sample-audio"
+          src=""
+          controls="controls"
+          autobuffer="autobuffer"
+        ></audio>
+      </div>
+      <button id="audio-get-btn">Read Sample Audio File</button>
     </div>
   </body>
 </html>
