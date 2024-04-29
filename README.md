@@ -244,6 +244,15 @@ ares-launch com.playfi.app -d target
 
 ---
 
+### Input Parameters Format for Service Calls using WebApp or another service
+
+The call to a Luna Bus registered service supports input parameters in the form of a `JSON`.
+The response is also sent in the form of a `JSON`
+
+WebApp ----Call to Service1/Method2:`JSON` Payload----> Service1/Method1----> Return Response as `JSON`
+
+---
+
 ### Debugging WebApps
 
 Once the app is running in the emulator, this command opens a web browser and you can check the console for any logs/errors from the WebApp.
